@@ -158,9 +158,9 @@ async function sendTelegramNotification(leadData) {
 
   let contactsInfo = 'Контакты не указаны';
   if (contacts.hasContacts) {
-    if (contacts.phones.length > 0) contactsInfo = `📞 Телефон: ${contacts.phones.join(', ')}\n`;
-    if (contacts.emails.length > 0) contactsInfo += `📧 Email: ${contacts.emails.join(', ')}\n`;
-    if (contacts.urls.length > 0) contactsInfo += `🌐 Сайт: ${contacts.urls.join(', ')}\n`;
+    if (contacts.phones.length > 0) contactsInfo = ` Телефон: ${contacts.phones.join(', ')}\n`;
+    if (contacts.emails.length > 0) contactsInfo += ` Email: ${contacts.emails.join(', ')}\n`;
+    if (contacts.urls.length > 0) contactsInfo += ` Сайт: ${contacts.urls.join(', ')}\n`;
     contactsInfo = contactsInfo.trim();
   }
 
@@ -169,17 +169,17 @@ async function sendTelegramNotification(leadData) {
 
   let needsInfoText = '';
   if (needsInfo.length > 0) {
-    needsInfoText = `\n📋 Выявленные потребности:\n${needsInfo.map(need => `• ${need}`).join('\n')}\n`;
+    needsInfoText = `\n Выявленные потребности:\n${needsInfo.map(need => `• ${need}`).join('\n')}\n`;
   }
 
-  const messageText = `🎯 НОВЫЙ ЛИД | ${process.env.COMPANY_NAME || 'lidorubov.net'}
+  const messageText = ` НОВЫЙ ЛИД | ${process.env.COMPANY_NAME || 'lidorubov.net'}
 ──────────────
-⏰ Время: ${new Date().toLocaleString('ru-RU')}
-📊 Этап: ${stage}
+ Время: ${new Date().toLocaleString('ru-RU')}
+ Этап: ${stage}
 ${contactsInfo}
 ${needsInfoText}
-💬 Последнее сообщение: "${userMessage}"
-📜 История разговора (последние 5 сообщений):
+ Последнее сообщение: "${userMessage}"
+ История разговора (последние 5 сообщений):
 ${lastMessages}`;
 
   const sendPromises = chatIds.map(chatId =>
@@ -191,7 +191,7 @@ ${lastMessages}`;
         parse_mode: 'HTML'
       }
     ).catch(error => {
-      console.error(`❌ Ошибка отправки в Telegram (chat_id: ${chatId}):`, error.message);
+      console.error(` Ошибка отправки в Telegram (chat_id: ${chatId}):`, error.message);
       return null;
     })
   );
@@ -199,9 +199,9 @@ ${lastMessages}`;
   try {
     const results = await Promise.allSettled(sendPromises);
     const successCount = results.filter(r => r.status === 'fulfilled' && r.value !== null).length;
-    console.log(`✅ Уведомление отправлено ${successCount} из ${chatIds.length} администраторам`);
+    console.log(` Уведомление отправлено ${successCount} из ${chatIds.length} администраторам`);
   } catch (error) {
-    console.error('❌ Критическая ошибка отправки в Telegram:', error.message);
+    console.error(' Критическая ошибка отправки в Telegram:', error.message);
   }
 }
 
@@ -324,7 +324,7 @@ app.get('/api/health', (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`🚀 Сервер запущен на порту ${PORT}`);
-  console.log(`📊 Версия скрипта: ${process.env.SALES_SCRIPT_VERSION || '1.0'}`);
-  console.log(`🤖 Модель OpenAI: ${process.env.OPENAI_MODEL || 'gpt-4'}`);
+  console.log(` Сервер запущен на порту ${PORT}`);
+  console.log(` Версия скрипта: ${process.env.SALES_SCRIPT_VERSION || '1.0'}`);
+  console.log(` Модель OpenAI: ${process.env.OPENAI_MODEL || 'gpt-4'}`);
 });
